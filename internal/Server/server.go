@@ -1,3 +1,5 @@
+//
+
 package server
 
 import (
@@ -13,11 +15,16 @@ import (
 	"time"
 )
 
+// NewServer inicializa um novo servidor HTTP escutando na porta 8080.
+// Define a rota "/cotacao" que responde com a cotação atual do dólar e a salva no banco de dados.
 func NewServer() {
 	http.HandleFunc("/cotacao", handlerGetPrice)
 	http.ListenAndServe(":8080", nil)
 }
 
+// handlerGetPrice é o handler para a rota "/cotacao".
+// Ele faz uma chamada para uma API externa para obter a cotação do dólar, retorna a cotação ao cliente,
+// e insere a cotação no banco de dados.
 func handlerGetPrice(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	exchance, err := getPrice(ctx)
@@ -42,6 +49,8 @@ func handlerGetPrice(w http.ResponseWriter, r *http.Request) {
 	database.NewExchange(ctx, db)
 }
 
+// getPrice realiza uma requisição para uma API externa que fornece a cotação do dólar (USD-BRL).
+// Ele retorna a cotação no formato de uma estrutura JSON ou um erro em caso de falha.
 func getPrice(ctx context.Context) (*models.JsonExternalResponse, error) {
 	ctx, cancel := context.WithTimeout(ctx, 200*time.Millisecond)
 	defer cancel()

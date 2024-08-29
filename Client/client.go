@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// Bid representa a estrutura para armazenar o valor do dólar (bid) que será gravado no arquivo de saída.
 type Bid struct {
 	Bid string `json:"bid"`
 }
@@ -19,6 +20,8 @@ func main() {
 	Client()
 }
 
+// Client realiza uma requisição HTTP para o servidor local que expõe a cotação do dólar,
+// processa a resposta JSON e grava o valor da cotação em um arquivo de texto.
 func Client() {
 	var cotacao models.JsonExternalResponse
 
@@ -52,6 +55,8 @@ func Client() {
 
 }
 
+// writeCotacaoTXT recebe o valor do dólar (bid) e o escreve em um arquivo de texto "cotacao.txt".
+// O formato da saída é definido por um template.
 func writeCotacaoTXT(bid string) {
 
 	dolar := Bid{Bid: bid}
